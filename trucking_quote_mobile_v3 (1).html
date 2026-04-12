@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Trucking Quote Form</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f4f4f0; display: flex; justify-content: center; padding: 1.5rem 1rem; min-height: 100vh; }
+
+.phone-wrap { width: 100%; max-width: 390px; }
+
+.setup-card { background: white; border: 0.5px solid #e0e0e0; border-radius: 16px; padding: 1.5rem; }
+.setup-card h2 { font-size: 15px; font-weight: 500; color: #111; margin-bottom: 4px; }
+.setup-card p { font-size: 13px; color: #666; margin-bottom: 1.25rem; line-height: 1.5; }
+.setup-label { font-size: 12px; color: #666; font-weight: 500; margin-bottom: 4px; display: block; }
+.setup-input { width: 100%; padding: 11px 14px; font-size: 15px; border: 0.5px solid #ccc; border-radius: 10px; background: white; color: #111; font-family: inherit; outline: none; margin-bottom: 12px; -webkit-appearance: none; }
+.setup-input:focus { border-color: #f59e0b; box-shadow: 0 0 0 3px rgba(245,158,11,0.12); }
+.setup-btn { width: 100%; padding: 13px; background: #0f1117; color: white; border: none; border-radius: 10px; font-size: 15px; font-weight: 500; cursor: pointer; font-family: inherit; margin-top: 4px; }
+
+.mobile-form { display: none; border-radius: 24px; overflow: hidden; border: 0.5px solid #ddd; box-shadow: 0 8px 40px rgba(0,0,0,0.12); }
+
+.mhero { background: #0f1117; padding: 20px 18px 18px; }
+.mhero-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.mlogo { display: flex; align-items: center; gap: 9px; }
+.mlogo-box { width: 34px; height: 34px; background: #f59e0b; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.mlogo-box svg { width: 19px; height: 19px; fill: #0f1117; }
+.mco-name { font-size: 15px; font-weight: 500; color: white; }
+.mco-tag { font-size: 11px; color: rgba(255,255,255,0.45); margin-top: 1px; }
+.mbadge { background: rgba(245,158,11,0.18); border: 0.5px solid rgba(245,158,11,0.5); border-radius: 20px; padding: 4px 10px; font-size: 11px; color: #f59e0b; font-weight: 500; white-space: nowrap; }
+.mhero-title { font-size: 20px; font-weight: 500; color: white; margin-bottom: 3px; }
+.mhero-sub { font-size: 12px; color: rgba(255,255,255,0.45); padding-bottom: 14px; }
+.mhero-bar { height: 3px; background: linear-gradient(90deg, #f59e0b 0%, #f59e0b 45%, #3b82f6 45%, #3b82f6 75%, transparent 75%); border-radius: 2px; }
+
+.msteps { display: flex; align-items: center; justify-content: center; gap: 6px; padding: 14px 18px; background: white; border-bottom: 0.5px solid #eee; }
+.mstep { display: flex; flex-direction: column; align-items: center; gap: 4px; flex: 1; }
+.mstep-dot { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 500; border: 0.5px solid #ddd; color: #aaa; background: white; transition: all 0.2s; }
+.mstep-dot.active { background: #0f1117; color: white; border-color: #0f1117; }
+.mstep-dot.done { background: #f59e0b; color: #0f1117; border-color: #f59e0b; }
+.mstep-label { font-size: 10px; color: #aaa; text-align: center; }
+.mstep-label.active { color: #111; font-weight: 500; }
+.step-line { height: 1px; background: #eee; flex: 0.5; margin-bottom: 14px; }
+
+.mpage { display: none; background: #f4f4f0; padding: 14px; }
+.mpage.active { display: block; }
+
+.mcard { background: white; border: 0.5px solid #eee; border-radius: 14px; padding: 14px; margin-bottom: 10px; }
+.mfield { margin-bottom: 14px; }
+.mfield:last-child { margin-bottom: 0; }
+.mlabel { display: block; font-size: 13px; color: #555; font-weight: 500; margin-bottom: 5px; }
+.mreq { color: #f59e0b; }
+.minput { width: 100%; padding: 13px 14px; font-size: 16px; border: 0.5px solid #ccc; border-radius: 10px; background: white; color: #111; font-family: inherit; outline: none; -webkit-appearance: none; appearance: none; transition: border-color 0.15s; }
+.minput:focus { border-color: #f59e0b; box-shadow: 0 0 0 3px rgba(245,158,11,0.1); }
+select.minput { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
+textarea.minput { min-height: 90px; resize: none; line-height: 1.5; }
+
+.route-wrap { display: flex; gap: 10px; align-items: stretch; }
+.route-icons { display: flex; flex-direction: column; align-items: center; padding-top: 14px; }
+.rdot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.rdot-a { background: #f59e0b; }
+.rdot-b { background: #3b82f6; }
+.rline { width: 2px; flex: 1; background: #ddd; margin: 4px 0; min-height: 20px; }
+.route-fields { flex: 1; display: flex; flex-direction: column; gap: 8px; }
+
+.cargo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.citem { background: white; border: 0.5px solid #ddd; border-radius: 10px; padding: 12px 8px; text-align: center; cursor: pointer; transition: all 0.15s; -webkit-tap-highlight-color: transparent; }
+.citem:active { transform: scale(0.97); }
+.citem.sel { border-color: #f59e0b; background: rgba(245,158,11,0.07); }
+.citem svg { width: 22px; height: 22px; display: block; margin: 0 auto 5px; stroke: #888; fill: none; stroke-width: 1.5; }
+.citem.sel svg { stroke: #b45309; }
+.citem-label { font-size: 11px; color: #666; font-weight: 500; }
+.citem.sel .citem-label { color: #b45309; }
+
+.mfooter { background: white; padding: 14px; border-top: 0.5px solid #eee; }
+.mnext-btn { width: 100%; padding: 15px; background: #0f1117; color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: 500; cursor: pointer; font-family: inherit; display: flex; align-items: center; justify-content: center; gap: 8px; -webkit-tap-highlight-color: transparent; }
+.mnext-btn:active { opacity: 0.85; transform: scale(0.99); }
+.mback-btn { width: 100%; padding: 12px; background: transparent; color: #666; border: 0.5px solid #ddd; border-radius: 12px; font-size: 15px; font-weight: 500; cursor: pointer; font-family: inherit; margin-top: 8px; }
+.mprog { height: 3px; background: #eee; border-radius: 2px; margin-bottom: 10px; overflow: hidden; }
+.mprog-fill { height: 100%; background: #f59e0b; border-radius: 2px; transition: width 0.3s; }
+
+.msuccess { display: none; background: white; padding: 2.5rem 1.5rem; text-align: center; }
+.msuccess-icon { width: 60px; height: 60px; background: #0f1117; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.25rem; }
+.msuccess-icon svg { width: 28px; height: 28px; stroke: #f59e0b; fill: none; stroke-width: 2.5; }
+.msuccess h3 { font-size: 18px; font-weight: 500; color: #111; margin-bottom: 8px; }
+.msuccess p { font-size: 14px; color: #666; line-height: 1.6; }
+.msuccess-co { font-weight: 500; color: #111; }
+</style>
+</head>
+<body>
+
+<div class="phone-wrap">
+
+  <div class="setup-card" id="setup">
+    <h2>Set up your quote form</h2>
+    <p>Enter your client's company name — it'll appear on the form instantly.</p>
+    <label class="setup-label">Company name <span style="color:#f59e0b">*</span></label>
+    <input class="setup-input" id="inp-co" placeholder="e.g. Johnson Freight LLC" />
+    <label class="setup-label">Tagline (optional)</label>
+    <input class="setup-input" id="inp-tag" placeholder="e.g. Fast. Reliable. Nationwide." />
+    <button class="setup-btn" onclick="launchForm()">Preview mobile form →</button>
+  </div>
+
+  <div class="mobile-form" id="mform">
+    <div class="mhero">
+      <div class="mhero-top">
+        <div class="mlogo">
+          <div class="mlogo-box">
+            <svg viewBox="0 0 24 24"><path d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4zM6 18.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm13.5-9l1.96 2.5H17V9.5h2.5zm-1.5 9c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+          </div>
+          <div>
+            <div class="mco-name" id="dco">Company</div>
+            <div class="mco-tag" id="dtag">Trucking & Logistics</div>
+          </div>
+        </div>
+        <div class="mbadge">Free Quote</div>
+      </div>
+      <div class="mhero-title">Get a Shipping Quote</div>
+      <div class="mhero-sub">Takes less than 2 minutes to fill out</div>
+      <div class="mhero-bar"></div>
+    </div>
+
+    <div class="msteps">
+      <div class="mstep"><div class="mstep-dot active" id="sd1">1</div><div class="mstep-label active" id="sl1">Contact</div></div>
+      <div class="step-line"></div>
+      <div class="mstep"><div class="mstep-dot" id="sd2">2</div><div class="mstep-label" id="sl2">Route</div></div>
+      <div class="step-line"></div>
+      <div class="mstep"><div class="mstep-dot" id="sd3">3</div><div class="mstep-label" id="sl3">Cargo</div></div>
+    </div>
+
+    <!-- Step 1 -->
+    <div class="mpage active" id="p1">
+      <div class="mprog"><div class="mprog-fill" style="width:33%"></div></div>
+      <div class="mcard">
+        <div class="mfield">
+          <label class="mlabel">Full name <span class="mreq">*</span></label>
+          <input class="minput" type="text" id="f-name" placeholder="John Smith" />
+        </div>
+        <div class="mfield">
+          <label class="mlabel">Phone number <span class="mreq">*</span></label>
+          <input class="minput" type="tel" id="f-phone" placeholder="+1 (555) 000-0000" />
+        </div>
+        <div class="mfield">
+          <label class="mlabel">Email address <span class="mreq">*</span></label>
+          <input class="minput" type="email" id="f-email" placeholder="john@company.com" />
+        </div>
+        <div class="mfield">
+          <label class="mlabel">Company name</label>
+          <input class="minput" type="text" id="f-biz" placeholder="Optional" />
+        </div>
+      </div>
+      <div class="mfooter">
+        <button class="mnext-btn" onclick="goTo(2)">
+          Next — Route details
+          <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" width="16" height="16"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="mpage" id="p2">
+      <div class="mprog"><div class="mprog-fill" style="width:66%"></div></div>
+      <div class="mcard">
+        <div class="mfield">
+          <label class="mlabel">Pickup & drop-off <span class="mreq">*</span></label>
+          <div class="route-wrap">
+            <div class="route-icons">
+              <div class="rdot rdot-a"></div>
+              <div class="rline"></div>
+              <div class="rdot rdot-b"></div>
+            </div>
+            <div class="route-fields">
+              <input class="minput" type="text" id="f-pickup" placeholder="Pickup — city or address" />
+              <input class="minput" type="text" id="f-dropoff" placeholder="Drop-off — city or address" />
+            </div>
+          </div>
+        </div>
+        <div class="mfield">
+          <label class="mlabel">Pickup date <span class="mreq">*</span></label>
+          <input class="minput" type="date" id="f-date" />
+        </div>
+        <div class="mfield">
+          <label class="mlabel">Preferred time</label>
+          <select class="minput" id="f-time">
+            <option value="">Select time window</option>
+            <option>Morning (6am – 12pm)</option>
+            <option>Afternoon (12pm – 5pm)</option>
+            <option>Evening (5pm – 9pm)</option>
+            <option>Flexible</option>
+          </select>
+        </div>
+      </div>
+      <div class="mfooter">
+        <button class="mnext-btn" onclick="goTo(3)">
+          Next — Cargo details
+          <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" width="16" height="16"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+        <button class="mback-btn" onclick="goTo(1)">← Back</button>
+      </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="mpage" id="p3">
+      <div class="mprog"><div class="mprog-fill" style="width:100%"></div></div>
+      <div class="mcard">
+        <div class="mfield">
+          <label class="mlabel">Type of cargo <span class="mreq">*</span></label>
+          <div class="cargo-grid">
+            <div class="citem" onclick="selCargo(this,'General freight')">
+              <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+              <div class="citem-label">General</div>
+            </div>
+            <div class="citem" onclick="selCargo(this,'Machinery')">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg>
+              <div class="citem-label">Machinery</div>
+            </div>
+            <div class="citem" onclick="selCargo(this,'Construction')">
+              <svg viewBox="0 0 24 24"><polygon points="12 2 22 20 2 20"/></svg>
+              <div class="citem-label">Construction</div>
+            </div>
+            <div class="citem" onclick="selCargo(this,'Perishables')">
+              <svg viewBox="0 0 24 24"><path d="M12 2a9 9 0 0 1 9 9c0 4.5-6 11-9 11S3 15.5 3 11a9 9 0 0 1 9-9z"/></svg>
+              <div class="citem-label">Perishables</div>
+            </div>
+            <div class="citem" onclick="selCargo(this,'Vehicles')">
+              <svg viewBox="0 0 24 24"><path d="M5 17H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v9a2 2 0 0 1-2 2h-1"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg>
+              <div class="citem-label">Vehicles</div>
+            </div>
+            <div class="citem" onclick="selCargo(this,'Other')">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3M12 17h.01"/></svg>
+              <div class="citem-label">Other</div>
+            </div>
+          </div>
+          <input type="hidden" id="f-cargo" />
+        </div>
+        <div class="mfield">
+          <label class="mlabel">Estimated weight</label>
+          <select class="minput" id="f-weight">
+            <option value="">Select range</option>
+            <option>Under 500 lbs</option>
+            <option>500 – 2,000 lbs</option>
+            <option>2,000 – 10,000 lbs</option>
+            <option>10,000 – 30,000 lbs</option>
+            <option>30,000+ lbs (full load)</option>
+          </select>
+        </div>
+        <div class="mfield">
+          <label class="mlabel">Truck type needed</label>
+          <select class="minput" id="f-truck">
+            <option value="">Not sure / any</option>
+            <option>Flatbed</option>
+            <option>Dry van</option>
+            <option>Refrigerated</option>
+            <option>Step deck</option>
+            <option>Box truck</option>
+          </select>
+        </div>
+        <div class="mfield">
+          <label class="mlabel">Special instructions</label>
+          <textarea class="minput" id="f-notes" placeholder="Fragile items, gate code, loading dock info, hazmat details..."></textarea>
+        </div>
+      </div>
+      <div class="mfooter">
+        <button class="mnext-btn" onclick="submitForm()" style="background:#f59e0b; color:#0f1117;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#0f1117" stroke-width="2.5" width="16" height="16"><polyline points="20 6 9 17 4 12"/></svg>
+          Submit quote request
+        </button>
+        <button class="mback-btn" onclick="goTo(2)">← Back</button>
+      </div>
+    </div>
+
+    <div class="msuccess" id="msuccess">
+      <div class="msuccess-icon">
+        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+      </div>
+      <h3>Quote request sent!</h3>
+      <p><span class="msuccess-co" id="sco"></span> will review your details and reach out within 2 hours.</p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+var curStep = 1;
+
+function launchForm() {
+  var co = document.getElementById('inp-co').value.trim() || 'Your Company';
+  var tag = document.getElementById('inp-tag').value.trim() || 'Trucking & Logistics';
+  document.getElementById('dco').textContent = co;
+  document.getElementById('dtag').textContent = tag;
+  document.getElementById('sco').textContent = co;
+  document.getElementById('setup').style.display = 'none';
+  document.getElementById('mform').style.display = 'block';
+}
+
+function goTo(step) {
+  if (step > curStep) {
+    if (curStep === 1) {
+      var n = document.getElementById('f-name').value;
+      var p = document.getElementById('f-phone').value;
+      var e = document.getElementById('f-email').value;
+      if (!n || !p || !e) { alert('Please fill in your name, phone, and email.'); return; }
+    }
+    if (curStep === 2) {
+      var pu = document.getElementById('f-pickup').value;
+      var dr = document.getElementById('f-dropoff').value;
+      var dt = document.getElementById('f-date').value;
+      if (!pu || !dr || !dt) { alert('Please fill in pickup, drop-off, and date.'); return; }
+    }
+  }
+  document.getElementById('p' + curStep).classList.remove('active');
+  curStep = step;
+  document.getElementById('p' + curStep).classList.add('active');
+  for (var i = 1; i <= 3; i++) {
+    var dot = document.getElementById('sd' + i);
+    var lbl = document.getElementById('sl' + i);
+    dot.classList.remove('active','done');
+    lbl.classList.remove('active');
+    if (i < curStep) { dot.classList.add('done'); dot.innerHTML = '✓'; }
+    else if (i === curStep) { dot.classList.add('active'); dot.innerHTML = i; lbl.classList.add('active'); }
+    else { dot.innerHTML = i; }
+  }
+}
+
+function selCargo(el, type) {
+  document.querySelectorAll('.citem').forEach(function(c){ c.classList.remove('sel'); });
+  el.classList.add('sel');
+  document.getElementById('f-cargo').value = type;
+}
+
+function submitForm() {
+  var cargo = document.getElementById('f-cargo').value;
+  if (!cargo) { alert('Please select a cargo type.'); return; }
+  document.getElementById('p3').style.display = 'none';
+  document.getElementById('msuccess').style.display = 'block';
+}
+</script>
+</body>
+</html>
